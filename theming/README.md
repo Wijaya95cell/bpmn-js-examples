@@ -1,57 +1,80 @@
-# bpmn-js theming
+public class WarehouseProcess {
+    public static void main(String[] args) {
+        // Membuat objek Amazon dan Customer
+        Amazon amazon = new Amazon();
+        Customer customer = new Customer();
 
-This example showcases the different aspects of theming bpmn-js.
-
-![Screenshot](docs/screenshot.png)
-
-## Theming bpmn-js
-
-### Custom Renderer
-
-This example uses [bpmn-js-sketchy](https://github.com/bpmn-io/bpmn-js-sketchy) to replace the default renderer. You can also roll your own renderer as shown in the [custom elements example](https://github.com/bpmn-io/bpmn-js-examples/blob/main/custom-elements/src/custom-modeler/custom/CustomRenderer.js) or [bpmn-js-nyan](https://github.com/bpmn-io/bpmn-js-nyan/blob/main/lib/nyan/draw/NyanRenderer.js).
-
-### Custom Font
-
-You can specify which font bpmn-js should use:
-
-```javascript
-var bpmnViewer = new CustomBpmnJS({
-  // ...
-  textRenderer: {
-    defaultStyle: {
-      fontFamily: '"Nothing You Could Do"'
+        // Simulasi proses pengelolaan gudang
+        String orderID = customer.sendOrder();
+        if (amazon.receiveOrder(orderID)) {
+            if (amazon.verifyOrder(orderID)) {
+                if (amazon.isStockAvailable(orderID)) {
+                    amazon.pickItem(orderID);
+                    amazon.packItem(orderID);
+                    amazon.labelAndDocument(orderID);
+                    amazon.shipItem(orderID);
+                    amazon.updateSystem(orderID);
+                    customer.receiveOrder(orderID);
+                } else {
+                    amazon.notifyCustomer(orderID);
+                }
+            }
+        }
     }
-  }
-});
-```
+}
 
-__Note:__ Make sure the font has been loaded before rendering a diagram.
+// Kelas Amazon
+class Amazon {
+    public boolean receiveOrder(String orderID) {
+        System.out.println("Menerima Pesanan: " + orderID);
+        return true; // Pesanan diterima
+    }
 
-### Custom Colors
+    public boolean verifyOrder(String orderID) {
+        System.out.println("Verifikasi Pesanan: " + orderID);
+        return true; // Verifikasi berhasil
+    }
 
-Customizing the colors is very simple:
+    public boolean isStockAvailable(String orderID) {
+        System.out.println("Periksa Ketersediaan Stok untuk Pesanan: " + orderID);
+        // Simulasi stok tersedia
+        return true;
+    }
 
-```javascript
-var bpmnViewer = new CustomBpmnJS({
-  // ...
-  bpmnRenderer: {
-    defaultFillColor: '#333',
-    defaultStrokeColor: '#fff'
-  }
-});
-```
+    public void pickItem(String orderID) {
+        System.out.println("Mengambil Barang untuk Pesanan: " + orderID);
+    }
 
-### Custom CSS
+    public void packItem(String orderID) {
+        System.out.println("Pengepakan Barang untuk Pesanan: " + orderID);
+    }
 
-bpmn-js comes with a [default stylesheet](https://github.com/bpmn-io/diagram-js/blob/main/assets/diagram-js.css). Of course you can override any of these styles.
+    public void labelAndDocument(String orderID) {
+        System.out.println("Pelabelan dan Dokumentasi untuk Pesanan: " + orderID);
+    }
 
-## Run this example
+    public void shipItem(String orderID) {
+        System.out.println("Pengiriman Barang untuk Pesanan: " + orderID);
+    }
 
-```
-npm install
-npm run all
-```
+    public void updateSystem(String orderID) {
+        System.out.println("Pembaruan Sistem untuk Pesanan: " + orderID);
+    }
 
-## License
+    public void notifyCustomer(String orderID) {
+        System.out.println("Stok tidak tersedia untuk Pesanan: " + orderID + ". Notifikasi dikirim ke pelanggan.");
+    }
+}
 
-MIT
+// Kelas Customer
+class Customer {
+    public String sendOrder() {
+        String orderID = "ORD123";
+        System.out.println("Mengirim Pesanan: " + orderID);
+        return orderID;
+    }
+
+    public void receiveOrder(String orderID) {
+        System.out.println("Menerima Pesanan: " + orderID);
+    }
+}
